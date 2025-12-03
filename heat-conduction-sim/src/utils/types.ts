@@ -97,7 +97,7 @@ export interface SimulationConfig {
  * Statistics of live simulation
  * for real-time monitoring
  */
-export interface SimulationStatsm {
+export interface SimulationStats {
     /** Current simulation time [s] */
     time: number;
     /** Maximum temperature at plate [K] */
