@@ -1,25 +1,8 @@
 import { Layout, type TabType, Sidebar, SplitLayout, MainArea } from '@/components/Layout';
+import { Section, SectionHeader, SectionTitle,SectionContent} from '@/components/Section';
 import styled from 'styled-components';
+import { Thermometer } from 'lucide-react';
 
-const SetupView = styled.div`
-  padding: ${props => props.theme.spacing.xl};
-`;
-
-const SimulationView = styled.div`
-  padding: ${props => props.theme.spacing.xl};
-`;
-
-const Placeholder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  background: ${props => props.theme.colors.bgSecondary};
-  border: 2px dashed ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  color: ${props => props.theme.colors.textMuted};
-  font-size: ${props => props.theme.fontSize.lg};
-`;
 
 function App() {
   return (
@@ -28,28 +11,49 @@ function App() {
         switch (activeTab) {
           case 'setup':
             return (
-              <SetupView>
-                <h2>Setup Mode</h2>
-                <Placeholder>
-                  Configuration UI will go here
-                  <br />
-                  (PlateEditor, parameter forms, etc.)
-                </Placeholder>
-              </SetupView>
+              <Section>
+                <SplitLayout>
+                  <Sidebar>
+                      <Section>
+                        <SectionHeader>
+                          <SectionTitle>
+                            <Thermometer/>
+                            Heat Source
+                          </SectionTitle>
+                        </SectionHeader>
+                        <SectionContent>Hier steteh sachen</SectionContent>
+                      </Section>
+                      <Section>
+                        <SectionHeader>
+                          <SectionTitle>
+                            <Thermometer/>
+                            Heat Source
+                          </SectionTitle>
+                        </SectionHeader>
+                        <SectionContent>Hier steteh sachen</SectionContent>
+                      </Section>
+                  </Sidebar>
+                  <MainArea>
+                      <Section>
+                        <SectionTitle></SectionTitle>
+                      </Section>
+                  </MainArea>
+                </SplitLayout>
+              </Section>
             );
 
           case 'simulation':
             return (
-              <SimulationView>
+              <Section>
                 <SplitLayout>
                   <Sidebar>
-                      controls, stats
+                      c
                   </Sidebar>
                   <MainArea>
                       Simulation
                   </MainArea>
                 </SplitLayout>
-              </SimulationView>
+              </Section>
             );
 
           default:
