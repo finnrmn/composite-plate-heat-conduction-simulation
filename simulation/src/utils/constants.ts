@@ -1,4 +1,4 @@
-import type { Material, SimulationConfig } from "./types";
+import type { Material, SimulationConfig } from './types';
 
 /**
  * Material libarary with thermal properties
@@ -9,20 +9,20 @@ import type { Material, SimulationConfig } from "./types";
 export const MATERIALS: Record<string, Material> = {
     // Metals (high conductivity)
     Diamond: {
-        name: "Diamond",
+        name: 'Diamond',
         k: 1000,
         cp: 506,
         rho: 3500,
-        color: "#b9f2ff",
-        symbol: "C"
+        color: '#b9f2ff',
+        symbol: 'C'
     },
     Silver: {
-        name: "Silver",
+        name: 'Silver',
         k: 426.77,
         cp: 236,
         rho: 10500,
-        color: "#c0c0c0",
-        symbol: "Ag",
+        color: '#c0c0c0',
+        symbol: 'Ag',
     },
     Copper: {
         name: 'Copper',
@@ -103,15 +103,15 @@ export const DEFAULT_CONFIG: SimulationConfig = {
     Nx: 100,
     Ny: 100,
     // Materials 
-    baseMaterial: "Basalt",
+    baseMaterial: 'Basalt',
     inclusions: [
         {
-            id: "default-inc-1",
+            id: 'default-inc-1',
             x: 0.04,      // 4cm from left               
             y: 0.04,      // 4cm from bottom
             width: 0.02,  // 2cm×2cm square
             height: 0.02,
-            materialName: "Aluminium"
+            materialName: 'Aluminium'
         }
     ],
     // Heat source (hotspot)
@@ -126,7 +126,7 @@ export const DEFAULT_CONFIG: SimulationConfig = {
     // Boundary conditions
     ambientTemp: 293,     // 20°C = 293.15K
     convectionCoeff: 50,  // 50 W/m²·K (models heat lost to surrounding air)
-    boundaryCondition: "robin",   
+    boundaryCondition: 'robin',   
     // Simulation control
     timeStepMultiplier: 1.0, // 1× speed (for visualization)
     simulationDuration: 60,  // Run for 60 virtual seconds
