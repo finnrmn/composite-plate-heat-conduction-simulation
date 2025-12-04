@@ -6,6 +6,7 @@ import { MATERIALS } from "@/utils/constants";
 import { drawHeatMap } from "./utils/colors";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+import { Select } from '@/components/Select';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -13,7 +14,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${props => props.theme.spacing.xl};
-  background-color: ${props => props.theme.colors.bgPrimary};
 `;
 const Section = styled.section`
   display: flex;
@@ -140,7 +140,19 @@ function App() {
           />
         </Row>
       </Section>
+      <Section>
+        <Title>Select</Title>
+        <Select
+          label="Material"
+          options={[
+            { value: 'copper', label: 'Copper' },
+            { value: 'aluminium', label: 'Aluminium' },
+            { value: 'basalt', label: 'Basalt' },
+          ]}
+          style={{ maxWidth: '300px' }}
+        />
+      </Section>
     </Container>
   );
 }
-export default App
+export default App;

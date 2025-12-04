@@ -61,16 +61,6 @@ const StyledInput = styled.input<{ hasError?: boolean; hasSuffix?: boolean }>`
     cursor: not-allowed;
     background: ${props => props.theme.colors.bgTertiary};
   }
-
-  /* Hide default number input spinner buttons (can't be properly styled in dark themes) */
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  -moz-appearance: textfield;
 `;
 
 const Suffix = styled.span`
