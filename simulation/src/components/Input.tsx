@@ -13,7 +13,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${props => props.theme.spacing.xs};
-  width: 100%;
 `;
 
 const Label = styled.label`
@@ -26,14 +25,12 @@ const Label = styled.label`
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 100%;
 `;
 
 const StyledInput = styled.input<{ hasError?: boolean; hasSuffix?: boolean }>`
   width: 100%;
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  padding-right: ${props => props.hasSuffix ? '3rem' : props.theme.spacing.md};
-
+  padding-right: ${props => props.theme.spacing.sm};
   background: ${props => props.theme.colors.bgSecondary};
   border: 1px solid ${props => props.hasError
         ? props.theme.colors.danger
@@ -64,11 +61,21 @@ const StyledInput = styled.input<{ hasError?: boolean; hasSuffix?: boolean }>`
     cursor: not-allowed;
     background: ${props => props.theme.colors.bgTertiary};
   }
+
+  /* Hide default number input spinner buttons (can't be properly styled in dark themes) */
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  -moz-appearance: textfield;
 `;
 
 const Suffix = styled.span`
   position: absolute;
-  right: ${props => props.theme.spacing.md};
+  right: 0.0002rem;
   top: 50%;
   transform: translateY(-50%);
   color: ${props => props.theme.colors.textMuted};

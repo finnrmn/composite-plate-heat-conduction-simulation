@@ -13,6 +13,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${props => props.theme.spacing.xl};
+  background-color: ${props => props.theme.colors.bgPrimary};
 `;
 const Section = styled.section`
   display: flex;
@@ -20,7 +21,7 @@ const Section = styled.section`
   gap: ${props => props.theme.spacing.md};
 `;
 const Title = styled.h2`
-  font-size: ${props => props.theme.fontSize['2xl']};
+  font-size: ${props => props.theme.fontSize.xxl};
   color: ${props => props.theme.colors.textPrimary};
   margin-bottom: ${props => props.theme.spacing.sm};
 `;
@@ -120,6 +121,8 @@ function App() {
             suffix="°C"
             style={{ maxWidth: '300px' }}
           />
+        </Row>
+        <Row>
           <Input
             label="Power"
             type="number"
@@ -127,6 +130,8 @@ function App() {
             suffix="W/m³"
             style={{ maxWidth: '300px' }}
           />
+        </Row>
+        <Row>
           <Input
             label="With Error"
             type="text"
