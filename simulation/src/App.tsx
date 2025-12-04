@@ -1,6 +1,34 @@
+import styled from 'styled-components';
 import { useRef, useEffect } from "react";
+import { Play, Pause, Settings } from 'lucide-react';
+
 import { MATERIALS } from "@/utils/constants";
 import { drawHeatMap } from "./utils/colors";
+import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
+
+const Container = styled.div`
+  min-height: 100vh;
+  padding: ${props => props.theme.spacing.xxl};
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.xl};
+`;
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.md};
+`;
+const Title = styled.h2`
+  font-size: ${props => props.theme.fontSize['2xl']};
+  color: ${props => props.theme.colors.textPrimary};
+  margin-bottom: ${props => props.theme.spacing.sm};
+`;
+const Row = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing.md};
+  flex-wrap: wrap;
+`;
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -34,31 +62,80 @@ function App() {
     drawHeatMap(ctx, data, Nx, Ny, min, max);
   }, [Nx, Ny]);
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Material Library</h2>
-      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-        {Object.values(MATERIALS).map((mat) => (
-          <div
-            key={mat.name}
-            style={{ padding: "1rem", background: mat.color, color: "#000", borderRadius: "10px", minWidth: "150px" }}>
+    <Container>
+      <Section>
+        <Title>Material Library</Title>
+        <Row>
+          {Object.values(MATERIALS).map((mat) => (
+            <div
+              key={mat.name}
+              style={{ padding: "1rem", background: mat.color, color: "#000", borderRadius: "10px", minWidth: "150px" }}>
 
-            <strong>{mat.name}</strong> ({mat.symbol})
+              <strong>{mat.name}</strong> ({mat.symbol})
 
-            k: {mat.k} W/(m·K)
-          </div>
-        ))}
-      </div>
-      <h2>Color Map</h2>
-      <canvas
-        ref={canvasRef}
-        style={{
-          width: 400,
-          height: 400,
-          imageRendering: "pixelated",
-          border: "1px solid #ccc",
-        }}
-      />
-    </div>
+              k: {mat.k} W/(m·K)
+            </div>
+          ))}
+        </Row>
+      </Section>
+      <Section>
+        <Title>Color Map</Title>
+        <canvas
+          ref={canvasRef}
+          style={{
+            width: 400,
+            height: 400,
+            imageRendering: "pixelated",
+            border: "1px solid #ccc",
+          }}
+        />
+      </Section>
+      <Section>
+        <Title>Buttons</Title>
+        <Row>
+          <Button variant="primary">Primary</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="danger">Danger</Button>
+          <Button variant="outline">Outline</Button>
+        </Row>
+        <Row>
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg">Large</Button>
+        </Row>
+        <Row>
+          <Button icon={<Play size={16} />}>Play</Button>
+          <Button icon={<Pause size={16} />} variant="secondary">Pause</Button>
+          <Button disabled>Disabled</Button>
+        </Row>
+      </Section>
+
+      <Section>
+        <Title>Inputs</Title>
+        <Row>
+          <Input
+            label="Temperature"
+            type="number"
+            placeholder="Enter temperature"
+            suffix="°C"
+            style={{ maxWidth: '300px' }}
+          />
+          <Input
+            label="Power"
+            type="number"
+            placeholder="Enter power"
+            suffix="W/m³"
+            style={{ maxWidth: '300px' }}
+          />
+          <Input
+            label="With Error"
+            type="text"
+            error="This field is required"
+            style={{ maxWidth: '300px' }}
+          />
+        </Row>
+      </Section>
+    </Container>
   );
 }
 export default App
