@@ -108,6 +108,8 @@ export interface SimulationStats {
     avgTemp: number;
     /** Total thermal energy [J] */
     totalEnergy: number;
+    /** Difference thermal energy ΔE [J] */
+    deltaEnergy: number;
     /** Count of calculated steps */
     calcStepCount: number;
 }

@@ -39,16 +39,21 @@ export class PhysicsEngine {
     /** gird spacing in Y-direction [m] */
     public dy: number;
 
-    // ===== Simulation time =====
+    // ===== Simulation Time =====
     /** Timestep [s] - calculated by CFL condition */
     public dt: number;
     /** Current simulation time [s] */
     public time: number;
-    /** Step Counts */
-    public steps: number;
     /** Flag inidactes if simulation is unstable */
     public isUnstable: boolean;
 
+    // ==== Simulation Stats ====
+    /** Step counts */
+    public steps: number;
+    /** Total energy at current time step [J] */
+    public E: number;
+    /** Initial energy E⁰ for ΔE plots [J] */
+    private E0: number;
 
     // ===== Configuration =====
     private config: SimulationConfig;
@@ -57,12 +62,13 @@ export class PhysicsEngine {
         this.config = config;
         this.Nx = config.Nx;
         this.Ny = config.Ny;
+        this.steps = 0;
+        this.time = 0;
+        this.E = 0;
+        this.isUnstable = false;
         // Calculate grid spacing
         this.dx = config.Lx / (this.Nx - 1);
         this.dy = config.Ly / (this.Ny - 1);
-        this.steps = 0;
-        this.time = 0;
-        this.isUnstable = false;
         // Allocate arrays with total grid size
         const size = this.Nx * this.Ny;
         // Init temperature to ambient temp
@@ -77,6 +83,9 @@ export class PhysicsEngine {
         this.initMaterials();
         // Init heat source region
         this.initHeatSource();
+        // Calc init energy 
+        this.E = this.calcEnergy();
+        this.E0 = this.E;
         // Calculate cfl timestep size
         this.dt = this.calcStableTimeStep();
     }
@@ -189,8 +198,7 @@ export class PhysicsEngine {
      *  - dirichlet bondary calculation
      *  - robin boundary calculation
      * 
-     * Ref:
-     *  - script.pdf | chaper 4 
+     * @ref script.pdf | chaper 4 
      */
     public step() {
         if (this.isUnstable) return;
@@ -208,7 +216,7 @@ export class PhysicsEngine {
         // Loop over all interior points 
         for (let j = 1; j < Ny - 1; j++) {
             for (let i = 1; i < Nx - 1; i++) {
-                const idx = j * Nx + 1;
+                const idx = j * Nx + i;
 
                 // Get neighbor indicies
                 const i_next = idx + 1;
@@ -241,20 +249,20 @@ export class PhysicsEngine {
         }
 
         // ===== Boundary Conditions =====
-        const T_env = this.config.ambientTemp;
+        const T_amb = this.config.ambientTemp;
 
         if (this.config.boundaryCondition === "dirichlet") {
             // ref: Equation 4.18 (fixed temp at all boundaries)
             // Left (i=0) & Right (i=Nx-1) edges
             for (let j = 0; j < Ny; j++) {
-                this.T_new[j * Nx] = T_env;              // Left edge
-                this.T_new[j * Nx + (Nx - 1)] = T_env;   // Right edge
+                this.T_new[j * Nx] = T_amb;              // Left edge
+                this.T_new[j * Nx + (Nx - 1)] = T_amb;   // Right edge
             }
 
             // Bottom (j=0) & Top (j=Ny-1) edges
             for (let i = 0; i < Nx; i++) {
-                this.T_new[i] = T_env;                   // Bottom edge
-                this.T_new[(Ny - 1) * Nx + i] = T_env;   // Top edge
+                this.T_new[i] = T_amb;                   // Bottom edge
+                this.T_new[(Ny - 1) * Nx + i] = T_amb;   // Top edge
             }
         } else {
             // Robin boundary condition
@@ -262,10 +270,106 @@ export class PhysicsEngine {
             const h = this.config.convectionCoeff;
             const h_dx = h * this.dx;
             const h_dy = h * this.dy;
-            
-            
+
+            // Right edge (i=Nx) Eqaution 4.24
+            for (let j = 0; j < Ny; j++) {
+                const idx = j * Nx + (Nx - 1);
+                const idx_inner = j * Nx + (Nx - 2);
+                const k = this.k[idx];
+                this.T_new[idx] = (k / (k + h_dx)) * this.T[idx_inner] + (h_dx / (k + h_dx)) * T_amb;
+            }
+            // Left edge (i=0) Equation 4.25
+            for (let j = 0; j < Ny; j++) {
+                const idx = j * Nx + 0;
+                const idx_inner = j * Nx + 1;
+                const k = this.k[idx];
+                this.T_new[idx] = (k / (k + h_dx)) * this.T[idx_inner] + (h_dx / (k + h_dx)) * T_amb;
+            }
+            // Bottom edge (j=0) Equation 4.26
+            for (let i = 0; i < Nx; i++) {
+                const idx = 0 * Nx + i;
+                const idx_inner = 1 * Nx + i;
+                const k = this.k[idx];
+                this.T_new[idx] = (k / (k + h_dy)) * this.T[idx_inner] + (h_dy / (k + h_dy)) * T_amb;
+            }
+            // Top edge (j=Ny) Equation 4.27
+            for (let i = 0; i < Nx; i++) {
+                const idx = (Ny - 1) * Nx + i;
+                const idx_inner = (Ny - 2) * Nx + i;
+                const k = this.k[idx];
+                this.T_new[idx] = (k / (k + h_dy)) * this.T[idx_inner] + (h_dy / (k + h_dy)) * T_amb;
+            }
+        }
+        // ===== BUFFER SWAP =====
+        const temp = this.T;
+        this.T = this.T_new;
+        this.T_new = temp;
+        // Advance simulation time & counter
+        this.time += dt;
+        this.steps += 1;
+
+        // ===== STABILITY CHECK =====
+        const centerIdx = Math.floor(this.T.length / 2);
+        if (isNaN(this.T[centerIdx]) || !isFinite(this.T[0])) {
+            this.isUnstable = true;
+            console.error("Simulation became unstable!");
         }
     }
+    /**
+     * Calculation of Energy E [J]
+     * 
+     * Used in getStats() for ΔE plot
+     * 
+     * Formula:
+     *  - Eⁿ ≈ Σᵢ₌₀ⁿˣ Σⱼ₌₀ⁿʸ ρᵢⱼ · cₚᵢⱼ · Tⁿᵢⱼ · ΔV
+     *  - ΔV = eΔxΔy
+     *  - ΔEⁿ = Eⁿ - E⁰
+     * 
+     * @ref script.pdf | section 4.5 
+     */
+    private calcEnergy(): number {
+        // ΔV Equation 4.30
+        const dV = this.dx * this.dy * 1.0;
+        // Eⁿ Equation 4.31
+        const T = this.T;
+        const rho_cp = this.rho_cp;
+        let E = 0;
 
+        for (let idx = 0; idx < T.length; idx++) {
+            E += rho_cp[idx] * T[idx] * dV;
+        }
+        return E;
+    }
 
+    public getStats(): SimulationStats {
+        const T = this.T;
+
+        let minTemp = -Infinity;
+        let maxTemp = Infinity;
+        let sumTemp = 0;
+
+        for (let i = 0; i < T.length; i++) {
+            const val = T[i];
+            if (val < minTemp) minTemp = val;
+            if (val > maxTemp) maxTemp = val;
+            sumTemp += val;
+        }
+
+        const avgTemp = sumTemp / T.length;
+
+        const totalEnergy = this.calcEnergy();
+        this.E = totalEnergy;
+
+        const deltaEnergy = totalEnergy - this.E0;
+
+        return {
+            time: this.time,
+            maxTemp,
+            minTemp,
+            avgTemp,
+            totalEnergy,
+            deltaEnergy,
+            calcStepCount: this.steps,
+        };
+    }
 }
