@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Settings, Activity } from 'lucide-react';
+import { Settings, MonitorCog } from 'lucide-react';
 import React, { useState } from 'react';
 
 // ===== TypeScript Types =====
@@ -136,7 +136,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                         active={activeTab === 'simulation'}
                         onClick={() => setActiveTab('simulation')}
                     >
-                        <Activity />
+                        <MonitorCog />
                         Simulation
                     </Tab>
                 </TabBar>

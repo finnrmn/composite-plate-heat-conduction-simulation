@@ -344,8 +344,8 @@ export class PhysicsEngine {
     public getStats(): SimulationStats {
         const T = this.T;
 
-        let minTemp = -Infinity;
-        let maxTemp = Infinity;
+        let minTemp = Infinity;
+        let maxTemp = -Infinity;
         let sumTemp = 0;
 
         for (let i = 0; i < T.length; i++) {
