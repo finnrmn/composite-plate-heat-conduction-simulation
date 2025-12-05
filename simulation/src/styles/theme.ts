@@ -25,7 +25,8 @@ export const theme = {
         panelOrange: '#fb923c',
         panelBlue: '#60a5fa',
         // Extras
-        heatSource: '"#ef4444"'
+        heatSource: '#ef4444',
+        graphIcon: '#34d399',
     },
     spacing: {
         xs: '0.25rem',   // 4px
