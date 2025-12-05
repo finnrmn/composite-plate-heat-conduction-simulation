@@ -350,12 +350,16 @@ export const SimulationView: React.FC<SimulationViewProps> = ({
                         </StatItem>
 
                         <StatItem>
-                            <StatLabel>Min T</StatLabel>
+                            <StatLabel>
+                                <Thermometer />
+                                Min T</StatLabel>
                             <StatValue color="#60a5fa">{stats.minTemp.toFixed(1)} K</StatValue>
                         </StatItem>
 
                         <StatItem>
-                            <StatLabel>Avg T</StatLabel>
+                            <StatLabel>
+                                <Thermometer />
+                                Avg T</StatLabel>
                             <StatValue color="#facc15">{stats.avgTemp.toFixed(1)} K</StatValue>
                         </StatItem>
                         <StatItem>
