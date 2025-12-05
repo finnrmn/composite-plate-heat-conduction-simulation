@@ -30,7 +30,7 @@ const InputWrapper = styled.div`
 const StyledInput = styled.input<{ hasError?: boolean; hasSuffix?: boolean }>`
   width: 100%;
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  padding-right: ${props => props.theme.spacing.sm};
+  ${props => props.hasSuffix && `padding-right: ${props.theme.spacing.xl};`}
   background: ${props => props.theme.colors.bgSecondary};
   border: 1px solid ${props => props.hasError
         ? props.theme.colors.danger
@@ -65,7 +65,7 @@ const StyledInput = styled.input<{ hasError?: boolean; hasSuffix?: boolean }>`
 
 const Suffix = styled.span`
   position: absolute;
-  right: 0.0002rem;
+  right: ${props => props.theme.spacing.md};
   top: 50%;
   transform: translateY(-50%);
   color: ${props => props.theme.colors.textMuted};

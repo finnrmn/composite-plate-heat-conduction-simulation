@@ -21,6 +21,11 @@ export const theme = {
         dangerHover: '#dc2626',
         success: '#10b981',
         warning: '#f59e0b',
+        // Panels Header
+        panelOrange: '#fb923c',
+        panelBlue: '#60a5fa',
+        // Extras
+        heatSource: '"#ef4444"'
     },
     spacing: {
         xs: '0.25rem',   // 4px

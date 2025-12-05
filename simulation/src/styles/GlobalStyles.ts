@@ -4,7 +4,7 @@ const GlobalStyles = createGlobalStyle`
     * {
         margin: 0;
         padding: 0;
-        box-sizing: boder-box;
+        box-sizing: border-box;
     }
     
     body {
@@ -20,7 +20,7 @@ const GlobalStyles = createGlobalStyle`
     }
     /* Number input: hide arrows */
     input[type='number'] {
-        -moz-appearance: textfiled;
+        -moz-appearance: textfield;
     }
     ::-webkit-inner-spin-button,
     ::-webkit-outer-spin-button {

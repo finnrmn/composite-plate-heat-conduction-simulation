@@ -10,35 +10,38 @@ interface LayoutProps {
 }
 // ===== Styled Components =====
 const LayoutContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: ${props => props.theme.colors.bgPrimary};
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: ${props => props.theme.colors.bgPrimary};
 `;
 const Header = styled.header`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.xl};
-    background: ${props => props.theme.colors.bgSecondary};
-    border-bottom: 1px solid ${props => props.theme.colors.border};
-    box-shadow: ${props => props.theme.shadows.md};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.xl};
+  background: ${props => props.theme.colors.bgSecondary};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  box-shadow: ${props => props.theme.shadows.md};
+`;
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
 `;
 const Title = styled.h1`
-  font-size: ${props => props.theme.fontSize.xxl};
+  font-size: ${props => props.theme.fontSize.xl};
   font-weight: 700;
   color: ${props => props.theme.colors.textPrimary};
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.md};
-
-  /* Gradient text effect */
-  background: linear-gradient(135deg,
-    ${props => props.theme.colors.primary} 0%,
-    ${props => props.theme.colors.primaryDark} 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+`;
+const SubTitle = styled.p`
+  font-size: ${props => props.theme.fontSize.xs};
+  color: ${props => props.theme.colors.textSecondary};
+  font-weight: 500;
 `;
 const TabBar = styled.nav`
   display: flex;
@@ -79,21 +82,20 @@ const Tab = styled.button<{ active: boolean }>`
 `;
 const Content = styled.main`
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
 `;
+// ===== Reusable Layout Elements =====
 export const SplitLayout = styled.div`
   display: grid;
   grid-template-columns: 300px 1fr;
   height: calc(100vh - 130px); // Subtract header + tabs
   gap: ${props => props.theme.spacing.md};
   padding: ${props => props.theme.spacing.md};
-
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
   }
 `;
-
 export const Sidebar = styled.aside`
   background: ${props => props.theme.colors.bgSecondary};
   border-radius: ${props => props.theme.borderRadius.lg};
@@ -101,7 +103,6 @@ export const Sidebar = styled.aside`
   overflow-y: auto;
   border: 1px solid ${props => props.theme.colors.border};
 `;
-
 export const MainArea = styled.section`
   background: ${props => props.theme.colors.bgSecondary};
   border-radius: ${props => props.theme.borderRadius.lg};
@@ -119,7 +120,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <LayoutContainer>
             <Header>
-                <Title>Heat Conduction Simulation</Title>
+              <TitleContainer>
+                <Title>HEAT CONDUCTION SIMULATION</Title>
+                <SubTitle>ON A 2D COMPOSITE PLATE - EXPLICITE FTCS SCHEME</SubTitle>
+              </TitleContainer>
                 <TabBar>
                     <Tab
                         active={activeTab === 'setup'}
@@ -137,9 +141,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     </Tab>
                 </TabBar>
             </Header>
-
-
-
             <Content>
                 {children(activeTab)}
             </Content>
