@@ -8,7 +8,7 @@ import { Select } from "@/components/Select";
 import { Button } from "@/components/Button";
 import { Settings, Zap, Plus, Trash2 } from "lucide-react";
 import type { theme } from "@/styles/theme";
-//import { PlateEditor } from "@/components/PlateEditor";
+import { PlateEditor } from "@/components/PlateEditor";
 
 // ===== TypeScript Interface =====
 interface SetupViewProps {
@@ -74,7 +74,7 @@ const EditorPanel = styled.div`
     border-radius: ${props => props.theme.borderRadius.lg};
     padding: ${props => props.theme.spacing.md};
     width: 100%;
-    max-width: 600px;
+    max-width: 780px;
 `;
 const EditorTitle = styled.h2`
     font-size: ${props => props.theme.fontSize.lg};
@@ -400,21 +400,11 @@ export const SetupView: React.FC<SetupViewProps> = ({
                         </EditorDimensions>
                     </EditorTitle>
 
-                    {/* TODO: Implement PlateEditor component in next tutorial */}
-                    <div style={{
-                        aspectRatio: '1',
-                        background: '#1e293b',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#64748b',
-                        fontSize: '14px'
-                    }}>
-                        PlateEditor SVG will go here
-                        <br />
-                        (See Tutorial 08: PlateEditor)
-                    </div>
+                    <PlateEditor
+                        config={config}
+                        onUpdateInclusion={onInclusionMove}
+                        onUpdateHeatSource={onHeatSourceMove}
+                    />
 
                     <Legend>
                         <LegendItem>

@@ -61,7 +61,7 @@ const HeatMapWrapper = styled.div`
     position: relative;
     width: min(83vh, 80vw);
     aspect-ratio: 1/1;
-    bosx-shadow: ${props => props.theme.shadows.xl};
+    box-shadow: ${props => props.theme.shadows.xl};
     border-radius: ${props => props.theme.borderRadius.lg};
 `;
 
