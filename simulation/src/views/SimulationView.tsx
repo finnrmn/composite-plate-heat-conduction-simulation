@@ -12,7 +12,6 @@ interface SimulationViewProps {
     config: SimulationConfig;
     engine: PhysicsEngine;
     isRunning: boolean;
-    simTime: number;
     stats: SimulationStats;
     history: Array<{ time: string; energy: number }>
     fps: number;
@@ -235,7 +234,6 @@ export const SimulationView: React.FC<SimulationViewProps> = ({
     config,
     engine,
     isRunning,
-    simTime,
     stats,
     history,
     fps,

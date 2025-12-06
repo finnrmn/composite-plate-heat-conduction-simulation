@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Layout, type TabType } from '@/components/Layout';
-import { MATERIALS, DEFAULT_CONFIG } from '@/utils/constants';
+import { DEFAULT_CONFIG } from '@/utils/constants';
 import { type SimulationConfig, type Region } from '@/utils/types';
 import { PhysicsEngine } from '@/engine/physicsEngine';
 import { SetupView } from '@/views/SetupView';
@@ -12,7 +12,6 @@ export default function App() {
   const [engine, setEngine] = useState<PhysicsEngine | null>(null);
   // Simulation State
   const [isRunning, setIsRunning] = useState(false);
-  const [simTime, setSimTime] = useState(0);
   const [stats, setStats] = useState({
     time: 0,
     maxTemp: 0,
@@ -45,7 +44,6 @@ export default function App() {
       const newEngine = new PhysicsEngine(config);
       setEngine(newEngine);
       engineRef.current = newEngine;
-      setSimTime(0);
       setHistory([]);
       setIsRunning(false);
       lastHistoryTime.current = 0;
@@ -126,8 +124,7 @@ export default function App() {
       engineRef.current.step();
     }
 
-    // Update React State for UI
-    setSimTime(engineRef.current.time);
+    
 
     const currentStats = engineRef.current.getStats();
     setStats(currentStats);
@@ -172,7 +169,7 @@ export default function App() {
     const newEngine = new PhysicsEngine(config);
     setEngine(newEngine);
     engineRef.current = newEngine;
-    setSimTime(0);
+    
     setHistory([]);
     simAccumulator.current = 0;
 
@@ -266,7 +263,6 @@ export default function App() {
               config={config}
               engine={engine}
               isRunning={isRunning}
-              simTime={simTime}
               stats={stats}
               history={history}
               fps={fps}

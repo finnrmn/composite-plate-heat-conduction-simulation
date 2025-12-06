@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { type Region, type HeatSource, type SimulationConfig } from "@/utils/types";
+import { type SimulationConfig } from "@/utils/types";
 import { MATERIALS } from "@/utils/constants";
 
 // ===== TypeScript Interface =====

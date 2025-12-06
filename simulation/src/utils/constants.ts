@@ -119,7 +119,7 @@ export const DEFAULT_CONFIG: SimulationConfig = {
             y: 0.04,      // 4cm from bottom
             width: 0.02,  // 2cm×2cm square
             height: 0.02,
-            materialName: 'Water'
+            materialName: 'Bronze'
         }
     ],
     // Heat source (hotspot)

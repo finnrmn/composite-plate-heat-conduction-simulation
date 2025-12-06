@@ -7,7 +7,6 @@ import { Input } from "@/components/Input";
 import { Select } from "@/components/Select";
 import { Button } from "@/components/Button";
 import { Settings, Zap, Plus, Trash2 } from "lucide-react";
-import type { theme } from "@/styles/theme";
 import { PlateEditor } from "@/components/PlateEditor";
 
 // ===== TypeScript Interface =====
