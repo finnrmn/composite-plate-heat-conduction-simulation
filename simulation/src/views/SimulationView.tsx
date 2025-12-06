@@ -327,7 +327,7 @@ export const SimulationView: React.FC<SimulationViewProps> = ({
                                 <Clock />
                                 Time
                             </StatLabel>
-                            <StatValue color="#14b8a6">{simTime.toFixed(3)} s</StatValue>
+                            <StatValue color="#14b8a6">{stats.time.toFixed(3)} s</StatValue>
                         </StatItem>
 
                         <StatItem>
