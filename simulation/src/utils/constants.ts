@@ -103,20 +103,28 @@ export const DEFAULT_CONFIG: SimulationConfig = {
     Nx: 100,
     Ny: 100,
     // Materials 
-    baseMaterial: 'Basalt',
+    baseMaterial: 'Silver',
     inclusions: [
         {
             id: 'default-inc-1',
-            x: 0.04,      // 4cm from left               
+            x: 0.02,      // 2cm from left               
             y: 0.04,      // 4cm from bottom
             width: 0.02,  // 2cm×2cm square
             height: 0.02,
-            materialName: 'Aluminium'
+            materialName: 'Diamond'
+        },
+        {
+            id: 'default-inc-2',
+            x: 0.06,      // 6cm from left               
+            y: 0.04,      // 4cm from bottom
+            width: 0.02,  // 2cm×2cm square
+            height: 0.02,
+            materialName: 'Water'
         }
     ],
     // Heat source (hotspot)
     heatSource: {
-        x: 0.02,          // 2cm from left
+        x: 0.05,          // 5cm from left
         y: 0.05,          // 5cm from bottom
         size: 0.005,      // 5mm×5mm sqare
         power: 5e7,       // 50 MW/m³ (high power)
