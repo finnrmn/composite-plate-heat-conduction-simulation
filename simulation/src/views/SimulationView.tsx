@@ -5,7 +5,7 @@ import { PhysicsEngine } from "@/engine/physicsEngine";
 import { Button } from "@/components/Button";
 import { Play, Pause, RotateCcw, Clock, Thermometer, Activity, Calculator } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-//import { HeatMapCanvas } from "@/components/HeatMapCanvas";
+import { HeatMapCanvas } from "@/components/HeatMapCanvas";
 
 // ===== TypeScript Interface =====
 interface SimulationViewProps {
@@ -55,6 +55,14 @@ const CanvasArea = styled.div`
     background: ${props => props.theme.colors.bgPrimary};
     padding: ${props => props.theme.spacing.xxl};
     position: relative;
+`;
+
+const HeatMapWrapper = styled.div`
+    position: relative;
+    width: min(83vh, 80vw);
+    aspect-ratio: 1/1;
+    bosx-shadow: ${props => props.theme.shadows.xl};
+    border-radius: ${props => props.theme.borderRadius.lg};
 `;
 
 const SectionHeader = styled.h3`
@@ -173,23 +181,6 @@ const GraphHeading = styled.h3`
     height: 12px;
     color: ${props => props.theme.colors.graphIcon}
   }
-`;
-
-const CanvasPlaceholder = styled.div`
-    width: 100%;
-    max-width: 80vh;
-    aspect-ratio: 1;
-    background: ${props => props.theme.colors.bgSecondary};
-    border: 2px dashed ${props => props.theme.colors.border};
-    border-radius: ${props => props.theme.borderRadius.lg};
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: ${props => props.theme.colors.textMuted};
-    font-size: ${props => props.theme.fontSize.sm};
-    text-align: center;
-    gap: ${props => props.theme.spacing.md};
 `;
 
 const GridInfo = styled.div`
@@ -339,8 +330,6 @@ export const SimulationView: React.FC<SimulationViewProps> = ({
                             <StatValue color="#14b8a6">{simTime.toFixed(3)} s</StatValue>
                         </StatItem>
 
-                        
-
                         <StatItem>
                             <StatLabel>
                                 <Thermometer />
@@ -425,12 +414,20 @@ export const SimulationView: React.FC<SimulationViewProps> = ({
 
             {/* RIGHT: Canvas Area */}
             <CanvasArea>
-                {/* TODO: Implement HeatMapCanvas component in next tutorial */}
-                <CanvasPlaceholder>
-                    <div>HeatMapCanvas will go here</div>
-                    <div style={{ fontSize: '12px' }}>(See Tutorial 07: HeatMapCanvas)</div>
-                </CanvasPlaceholder>
-
+                <HeatMapWrapper>
+                    <HeatMapCanvas
+                        tempData={engine.T}
+                        width={engine.Nx}
+                        height={engine.Ny}
+                        minTemp={stats.minTemp}
+                        maxTemp={stats.maxTemp}
+                        Lx={0.1}
+                        Ly={0.1}
+                        inclusions={config.inclusions}
+                        heatSource={config.heatSource}
+                        baseMaterial={config.baseMaterial}
+                    />
+                </HeatMapWrapper>
                 <GridInfo>
                     Grid: {config.Nx}×{config.Ny}
                 </GridInfo>
