@@ -6,11 +6,11 @@ import { MATERIALS } from "@/utils/constants";
  * Main class of physical calculation for the simulation.
  * 
  * Performs the following calculations:
- *  - Heat Update                   (script.pdf | section 4.3 | formula 4.17)
- *  - Dirichlet Boundary Condition  (script.pdf | section 4.3 | formula 4.18)
- *  - Robin Boundary Condition      (script.pdf | section 4.3 | formula 4.24-27)
- *  - CLF Stability Condition       (script.pdf | section 4.4 | formula 4.29)
- *  - Total Energy of Plate         (script.pdf | section 4.5 | formula 4.30,31)
+ *  - Heat Update                   (docs/simulation_documentation.pdf | section 4.3 | formula 4.17)
+ *  - Dirichlet Boundary Condition  (docs/simulation_documentation.pdf | section 4.3 | formula 4.18)
+ *  - Robin Boundary Condition      (docs/simulation_documentation.pdf | section 4.3 | formula 4.24-27)
+ *  - CLF Stability Condition       (docs/simulation_documentation.pdf | section 4.4 | formula 4.29)
+ *  - Total Energy of Plate         (docs/simulation_documentation.pdf | section 4.5 | formula 4.30,31)
  * 
  * Uses:
  *  - Grid Arrays (Float32Array) for better performance 
@@ -198,7 +198,7 @@ export class PhysicsEngine {
      *  - dirichlet bondary calculation
      *  - robin boundary calculation
      * 
-     * @ref script.pdf | chaper 4 
+     * @ref docs/simulation_documentation.pdf | chaper 4 
      */
     public step() {
         if (this.isUnstable) return;
@@ -325,7 +325,7 @@ export class PhysicsEngine {
      *  - ΔV = eΔxΔy
      *  - ΔEⁿ = Eⁿ - E⁰
      * 
-     * @ref script.pdf | section 4.5 
+     * @ref docs/simulation_documentation.pdf | section 4.5 
      */
     private calcEnergy(): number {
         // ΔV Equation 4.30
