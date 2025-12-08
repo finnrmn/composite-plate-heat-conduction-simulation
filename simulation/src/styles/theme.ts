@@ -6,16 +6,16 @@ export const theme = {
         primaryHover: '#0d9488',
         primaryDark: '#0f766e',
         // Background
-        bgPrimary: '#0f172a',
-        bgSecondary: '#1e293b',
-        bgTertiary: '#334155',
+        bgPrimary: '#232427ff',
+        bgSecondary: '#36393dff',
+        bgTertiary: '#4e5258ff',
         // Text
         textPrimary: '#f1f5f9',
         textSecondary: '#cbd5e1',
         textMuted: '#94a3b8',
         // Borders
-        border: '#475569',
-        borderLight: '#64748b',
+        border: '#777f8aff',
+        borderLight: '#79818dff',
         // States
         danger: '#ef4444',
         dangerHover: '#dc2626',
