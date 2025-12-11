@@ -32,9 +32,9 @@ const CanvasContainer = styled.div`
 `;
 
 const StyledCanvas = styled.canvas`
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
     image-rendering: pixelated;
 `;
 
