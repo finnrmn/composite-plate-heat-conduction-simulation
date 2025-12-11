@@ -8,6 +8,7 @@ import { SimulationView } from '@/views/SimulationView';
 
 export default function App() {
   // ===== State Management =====
+  const [activeTab, setActiveTab] = useState<TabType>('setup');
   const [config, setConfig] = useState<SimulationConfig>(DEFAULT_CONFIG);
   const [engine, setEngine] = useState<PhysicsEngine | null>(null);
   // Simulation State
@@ -38,9 +39,9 @@ export default function App() {
   const fpsFrameCount = useRef<number>(0);
   const lastFpsTime = useRef<number>(0);
 
-  // ===== Initialize Engine on Tab Switch =====
+  // ===== Initialize / Pause Engine on Tab Switch =====
   useEffect(() => {
-    if (engine) {
+    if (activeTab === 'simulation') {
       const newEngine = new PhysicsEngine(config);
       setEngine(newEngine);
       engineRef.current = newEngine;
@@ -56,18 +57,14 @@ export default function App() {
       const initialStats = newEngine.getStats();
       setStats(initialStats);
       startEnergy.current = initialStats.totalEnergy;
+    } else {
+      setIsRunning(false);
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      lastSimTime.current = 0;
+      lastRenderTime.current = 0;
+      simAccumulator.current = 0;
     }
-  }, [config]);
-
-  // Create initial engine placeholder
-  useEffect(() => {
-    const initialEngine = new PhysicsEngine(config);
-    setEngine(initialEngine);
-    engineRef.current = initialEngine;
-    const initialStats = initialEngine.getStats();
-    setStats(initialStats);
-    startEnergy.current = initialStats.totalEnergy;
-  }, []);
+  }, [activeTab, config]);
   // ===== Animation Loop =====
   const animate = useCallback((time: number) => {
     if (!engineRef.current) return;
@@ -241,9 +238,9 @@ export default function App() {
 
   // ===== Render React Components =====
   return (
-    <Layout>
-      {(activeTab: TabType) => {
-        if (activeTab === 'setup') {
+    <Layout activeTab={activeTab} onTabChange={setActiveTab}>
+      {(currentTab: TabType) => {
+        if (currentTab === 'setup') {
           return (
             <SetupView
               config={config}
@@ -257,7 +254,7 @@ export default function App() {
             />
           );
         }
-        if (activeTab === 'simulation' && engine) {
+        if (currentTab === 'simulation' && engine) {
           return (
             <SimulationView
               config={config}

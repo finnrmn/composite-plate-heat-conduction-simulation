@@ -7,6 +7,8 @@ export type TabType = 'setup' | 'simulation';
 // ===== TypeScript Interface =====
 interface LayoutProps {
     children: (activeTab: TabType) => React.ReactNode;
+    activeTab?: TabType;
+    onTabChange?: (tab: TabType) => void;
 }
 // ===== Styled Components =====
 const LayoutContainer = styled.div`
@@ -114,8 +116,16 @@ export const MainArea = styled.section`
 `;
 
 // ===== React Component =====
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
-    const [activeTab, setActiveTab] = useState<TabType>('setup');
+export const Layout: React.FC<LayoutProps> = ({ children, activeTab: controlledActiveTab, onTabChange }) => {
+    const [internalActiveTab, setInternalActiveTab] = useState<TabType>('setup');
+    const activeTab = controlledActiveTab ?? internalActiveTab;
+
+    const handleTabChange = (tab: TabType) => {
+        if (!controlledActiveTab) {
+            setInternalActiveTab(tab);
+        }
+        onTabChange?.(tab);
+    };
 
     return (
         <LayoutContainer>
@@ -127,14 +137,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <TabBar>
                     <Tab
                         active={activeTab === 'setup'}
-                        onClick={() => setActiveTab('setup')}
+                        onClick={() => handleTabChange('setup')}
                     >
                         <Settings />
                         Setup
                     </Tab>
                     <Tab
                         active={activeTab === 'simulation'}
-                        onClick={() => setActiveTab('simulation')}
+                        onClick={() => handleTabChange('simulation')}
                     >
                         <MonitorCog />
                         Simulation

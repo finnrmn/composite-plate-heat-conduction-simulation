@@ -136,6 +136,6 @@ export const DEFAULT_CONFIG: SimulationConfig = {
     convectionCoeff: 50,  // 50 W/m²·K (models heat lost to surrounding air)
     boundaryCondition: 'robin',   
     // Simulation control
-    timeStepMultiplier: 1.0, // 1× speed (for visualization)
+    timeStepMultiplier: 10.0, // 10× speed (for visualization)
     simulationDuration: 60,  // Run for 60 virtual seconds
 };

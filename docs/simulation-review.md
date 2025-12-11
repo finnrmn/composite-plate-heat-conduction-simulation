@@ -1,0 +1,16 @@
+# Simulation Implementation Check
+
+Comparison between the current app (`simulation/src`) and the reference repo at `C:\Users\finnr\Downloads\thermosim-2d`, focusing on simulation flow (primarily `App.tsx`) and physics wiring.
+
+## Findings
+- **Tab change no longer pauses the sim** – The new `App` renders views via the `Layout` render-prop without tracking the active tab in state, so the animation loop is never cancelled when you leave the Simulation tab. In the reference app, `activeTab` drove a `useEffect` that stopped `requestAnimationFrame` and reset timing when switching away (`thermosim-2d/App.tsx:16-67`). In the current code, the init/reset effect depends only on `config` (`simulation/src/App.tsx:42-60`) and the run loop cleanup only reacts to `isRunning` (`simulation/src/App.tsx:148-162`). Result: if you start the sim and move to Setup, the physics still steps in the background, consuming CPU and mutating state while you edit.
+
+- **Heatmap scaling loses the 1 K safety spread** – The current `SimulationView` feeds raw `stats.minTemp`/`stats.maxTemp` into `HeatMapCanvas` (`simulation/src/views/SimulationView.tsx:417-422`), while the legend still computes a padded `displayMaxTemp` (`simulation/src/views/SimulationView.tsx:253-256`). The reference app used the padded range for both the canvas and legend to avoid a zero-range color scale at startup (`thermosim-2d/App.tsx:252-255`). Now, when the field is uniform (e.g., immediately after reset), the heatmap collapses to a single dark color until any gradient appears, which can look like a broken render.
+
+- **Boundary condition casing changed** – New types/config expect lowercase `'dirichlet' | 'robin'` (`simulation/src/utils/types.ts:63`, `simulation/src/utils/constants.ts:135-139`), while the reference UI and config used capitalized strings (`thermosim-2d/types.ts:40`, `thermosim-2d/App.tsx:292-294`, `thermosim-2d/constants.ts:45`). Any saved configs or external callers still using the old casing will now fall into the Robin branch in `PhysicsEngine` by default, silently changing boundary behavior.
+
+- **Simulation speed baseline reduced** – `timeStepMultiplier` default dropped from `10` to `1` (`thermosim-2d/constants.ts:43` vs `simulation/src/utils/constants.ts:139`). The integration loop still computes steps/sec as `(timeStepMultiplier * speed * 60)` (`simulation/src/App.tsx:108-109`), so virtual time advances ~10× slower than before for the same UI speed slider. If the slowdown wasn’t intentional, this is the parameter to revisit.
+
+- **Default physics setup differs materially** – Base material switched from Basalt to Silver and a second inclusion plus different materials/positions were added (`simulation/src/utils/constants.ts:106-123` vs `thermosim-2d/constants.ts:22-38`); the heat source is now centered instead of offset (`simulation/src/utils/constants.ts:126-133` vs `thermosim-2d/constants.ts:33-39`). Results will diverge significantly from the previous baseline even with identical controls. Confirm these were intentional scenario changes.
+
+No divergences were found in the core FTCS stepping logic: `physicsEngine` matches the reference formulas and stability checks aside from added energy bookkeeping.
