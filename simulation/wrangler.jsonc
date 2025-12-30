@@ -1,6 +1,6 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "heat-conduction-sim",
+    "name": "heat-sim",
     "compatibility_date": "2025-12-30",
     "assets": {
         "directory": "./dist",
