@@ -69,14 +69,27 @@ const StyledButton = styled.button<ButtonProps>`
     ${props => props.size === 'sm' && css`
         padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
         font-size: ${props => props.theme.fontSize.xs};
+
+        ${props => props.theme.media.touch} {
+            padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+            min-height: 44px; // iOS minimum touch target
+        }
     `}
     ${props => props.size === 'md' && css`
         padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
         font-size: ${props => props.theme.fontSize.sm};
+
+        ${props => props.theme.media.touch} {
+            min-height: 44px; // iOS minimum touch target
+        }
     `}
     ${props => props.size === 'lg' && css`
         padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.lg};
         font-size: ${props => props.theme.fontSize.base};
+
+        ${props => props.theme.media.touch} {
+            min-height: 44px; // iOS minimum touch target
+        }
     `}
 `;
 

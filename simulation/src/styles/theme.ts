@@ -57,6 +57,24 @@ export const theme = {
         lg: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
         xl: '0 25px 50px -12px rgba(0 0 0, 025)',
     },
+    breakpoints: {
+        mobile: '768px',
+        tablet: '1024px',
+        desktop: '1280px',
+    },
+    media: {
+        mobile: '@media (max-width: 768px)',
+        tablet: '@media (max-width: 1024px)',
+        desktop: '@media (min-width: 1281px)',
+        mobileOnly: '@media (max-width: 767px)',
+        tabletOnly: '@media (min-width: 768px) and (max-width: 1024px)',
+        touch: '@media (hover: none) and (pointer: coarse)',
+
+        // Orientation-aware queries
+        tabletPortrait: '@media (max-width: 1024px) and (orientation: portrait)',
+        mobilePortrait: '@media (max-width: 768px) and (orientation: portrait)',
+        landscape: '@media (orientation: landscape)',
+    },
 } as const;
 
 export type Theme = typeof theme;

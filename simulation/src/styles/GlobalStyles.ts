@@ -5,6 +5,11 @@ const GlobalStyles = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent; /* Remove tap highlight on touch */
+    }
+
+    html {
+        overscroll-behavior: none; /* Prevent pull-to-refresh on Chrome mobile */
     }
     
     body {
@@ -12,11 +17,16 @@ const GlobalStyles = createGlobalStyle`
             'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        
+
         background: ${props => props.theme.colors.bgPrimary};
         color: ${props => props.theme.colors.textPrimary};
         /* Prevent horizontal scroll */
         overflow-x: hidden;
+
+        /* iOS-specific fixes */
+        overscroll-behavior-y: none; /* Prevent bounce scroll */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        -webkit-text-size-adjust: 100%; /* Prevent text size adjustment */
     }
     /* Number input: hide arrows */
     input[type='number'] {

@@ -61,6 +61,13 @@ const StyledInput = styled.input<{ hasError?: boolean; hasSuffix?: boolean }>`
     cursor: not-allowed;
     background: ${props => props.theme.colors.bgTertiary};
   }
+
+  /* Mobile touch targets */
+  ${props => props.theme.media.mobile} {
+    padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.md};
+    ${props => props.hasSuffix && `padding-right: ${props.theme.spacing.xl};`}
+    font-size: ${props => props.theme.fontSize.base};
+  }
 `;
 
 const Suffix = styled.span`

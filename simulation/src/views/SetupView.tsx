@@ -25,10 +25,10 @@ const SetupContainer = styled.div`
     display: flex;
     height: 100%;
     overflow: hidden;
-    
 
-    @media (max-width: 1024px){
+    ${props => props.theme.media.tabletPortrait} {
         flex-direction: column;
+        height: auto; // Allow scrolling
     }
 `;
 const ConfigColumn = styled.div`
@@ -46,8 +46,17 @@ const ConfigColumn = styled.div`
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
 
-    @media (max-width: 1024px) {
+    ${props => props.theme.media.tabletPortrait} {
         width: 100%;
+        max-height: 50vh; // Limit height when stacked
+    }
+
+    ${props => props.theme.media.landscape} {
+        width: 50%; // Keep 50/50 in landscape
+    }
+
+    ${props => props.theme.media.mobile} {
+        padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.md};
     }
 `;
 const EditorColumn = styled.div`
@@ -61,10 +70,22 @@ const EditorColumn = styled.div`
     justify-content: flex-start;
     align-items: center;
 
-    @media (max-width: 1024px) {
+    ${props => props.theme.media.tabletPortrait} {
         width: 100%;
         border-left: none;
         border-top: 1px solid ${props => props.theme.colors.border};
+        min-height: 400px; // Ensure editor is usable
+        overflow-y: auto; // Allow scrolling if content exceeds height
+    }
+
+    ${props => props.theme.media.landscape} {
+        width: 50%; // Keep 50/50 in landscape
+        border-left: 1px solid ${props => props.theme.colors.border};
+        border-top: none;
+    }
+
+    ${props => props.theme.media.mobile} {
+        padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.md};
     }
 `;
 const EditorPanel = styled.div`
@@ -74,6 +95,16 @@ const EditorPanel = styled.div`
     padding: ${props => props.theme.spacing.md};
     width: 100%;
     max-width: 780px;
+
+    /* Mobile portrait: Limit height to fit viewport */
+    ${props => props.theme.media.mobilePortrait} {
+        max-height: 60vh;
+    }
+
+    /* Tablet portrait: Slightly taller */
+    ${props => props.theme.media.tabletPortrait} {
+        max-height: 70vh;
+    }
 `;
 const EditorTitle = styled.h2`
     font-size: ${props => props.theme.fontSize.lg};
@@ -98,6 +129,12 @@ const Legend = styled.div`
     gap: ${props => props.theme.spacing.md};
     font-size: ${props => props.theme.fontSize.xs};
     color: ${props => props.theme.colors.textMuted};
+
+    ${props => props.theme.media.mobile} {
+        grid-template-columns: 1fr; // Stack on mobile
+        gap: ${props => props.theme.spacing.sm};
+        margin-top: ${props => props.theme.spacing.sm}; // Reduce spacing on mobile
+    }
 `;
 const LegendItem = styled.div`
     display: flex;
@@ -152,6 +189,11 @@ const InclusionGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: ${props => props.theme.spacing.sm};
+
+    ${props => props.theme.media.mobile} {
+        grid-template-columns: 1fr; // Single column on mobile
+        gap: ${props => props.theme.spacing.sm};
+    }
 `;
 const EmptyState = styled.div`
     text-align: center;

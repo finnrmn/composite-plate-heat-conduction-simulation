@@ -43,6 +43,11 @@ const PanelContent = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: ${props => props.theme.spacing.md};
+
+    ${props => props.theme.media.mobile} {
+        grid-template-columns: 1fr; // Single column on mobile
+        gap: ${props => props.theme.spacing.sm};
+    }
 `;
 // ===== React Component =====
 export const Panel: React.FC<PanelProps> = ({

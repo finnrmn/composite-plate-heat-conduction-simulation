@@ -53,6 +53,10 @@ const Watermark = styled.text`
     font-size: 4px;
     font-weight: bold;
     textShadow: '0px 0px 2px rgba(0,0,0,0.8)';
+
+    ${props => props.theme.media.mobile} {
+        font-size: 3px;
+    }
 `;
 
 // ===== React Component =====

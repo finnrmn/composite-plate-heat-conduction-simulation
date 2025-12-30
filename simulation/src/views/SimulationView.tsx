@@ -29,7 +29,7 @@ const SimulationContainer = styled.div`
     height: 100%;
     overflow: hidden;
 
-    @media (max-width: 1024px){
+    ${props => props.theme.media.tabletPortrait} {
         flex-direction: column;
     }
 `;
@@ -43,6 +43,26 @@ const Sidebar = styled.aside`
     flex-direction: column;
     gap: ${props => props.theme.spacing.lg};
     overflow-y: auto;
+
+    ${props => props.theme.media.tabletPortrait} {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid ${props => props.theme.colors.border};
+        max-height: 40vh; // Limit height when stacked
+        overflow-y: auto;
+    }
+
+    ${props => props.theme.media.landscape} {
+        width: 320px; // Keep sidebar width in landscape
+        border-right: 1px solid ${props => props.theme.colors.border};
+        border-bottom: none;
+        max-height: none;
+    }
+
+    ${props => props.theme.media.mobile} {
+        padding: ${props => props.theme.spacing.md};
+        gap: ${props => props.theme.spacing.md};
+    }
 `;
 
 const CanvasArea = styled.div`
@@ -54,6 +74,18 @@ const CanvasArea = styled.div`
     background: ${props => props.theme.colors.bgPrimary};
     padding: ${props => props.theme.spacing.xxl};
     position: relative;
+
+    ${props => props.theme.media.tabletPortrait} {
+        padding: ${props => props.theme.spacing.lg};
+    }
+
+    ${props => props.theme.media.landscape} {
+        padding: ${props => props.theme.spacing.lg}; // Optimize padding for landscape
+    }
+
+    ${props => props.theme.media.mobile} {
+        padding: ${props => props.theme.spacing.md};
+    }
 `;
 
 const HeatMapWrapper = styled.div`
@@ -62,6 +94,19 @@ const HeatMapWrapper = styled.div`
     aspect-ratio: 1/1;
     box-shadow: ${props => props.theme.shadows.xl};
     border-radius: ${props => props.theme.borderRadius.lg};
+
+    ${props => props.theme.media.tabletPortrait} {
+        width: min(50vh, 90vw); // More space on stacked layout
+    }
+
+    ${props => props.theme.media.landscape} {
+        width: min(70vh, 60vw); // Optimize for landscape aspect ratio
+    }
+
+    ${props => props.theme.media.mobile} {
+        width: 100%; // Full width on mobile
+        max-width: 400px;
+    }
 `;
 
 const SectionHeader = styled.h3`
@@ -96,6 +141,11 @@ const Slider = styled.input.attrs({ type: "range" })`
         background: ${props => props.theme.colors.primary};
         border-radius: 50%;
         cursor: pointer;
+
+        ${props => props.theme.media.touch} {
+            width: 24px;
+            height: 24px;
+        }
     }
 
     &::-moz-range-thumb {
@@ -105,6 +155,11 @@ const Slider = styled.input.attrs({ type: "range" })`
         border-radius: 50%;
         cursor: pointer;
         border: none;
+
+        ${props => props.theme.media.touch} {
+            width: 24px;
+            height: 24px;
+        }
     }
 `;
 
@@ -161,7 +216,11 @@ const StatValue = styled.span<{ color?: string }>`
 `;
 
 const GraphContainer = styled.div`
-    height: 192px; 
+    height: 192px;
+
+    ${props => props.theme.media.mobile} {
+        height: 150px;
+    }
 `;
 
 const GraphHeading = styled.h3`
@@ -195,6 +254,13 @@ const GridInfo = styled.div`
     border: 1px solid rgba(255, 255, 255, 0.1);
     pointer-events: none;
     z-index: 10;
+
+    ${props => props.theme.media.mobile} {
+        top: ${props => props.theme.spacing.sm};
+        right: ${props => props.theme.spacing.sm};
+        font-size: 10px;
+        padding: ${props => props.theme.spacing.xs};
+    }
 `;
 
 const ColorLegend = styled.div`
@@ -202,6 +268,12 @@ const ColorLegend = styled.div`
     display: flex;
     align-items: center;
     gap: ${props => props.theme.spacing.md};
+
+    ${props => props.theme.media.mobile} {
+        flex-direction: column;
+        gap: ${props => props.theme.spacing.sm};
+        align-items: flex-start;
+    }
 `;
 
 const ColorBar = styled.div`

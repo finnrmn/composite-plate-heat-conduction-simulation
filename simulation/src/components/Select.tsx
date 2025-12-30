@@ -60,6 +60,13 @@ const StyledSelect = styled.select`
     background: ${props => props.theme.colors.bgSecondary};
     color: ${props => props.theme.colors.textPrimary};
   }
+
+  /* Mobile touch targets */
+  ${props => props.theme.media.mobile} {
+    padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.md};
+    padding-right: 2rem;
+    font-size: ${props => props.theme.fontSize.base};
+  }
 `;
 
 // ===== React Component ===== 

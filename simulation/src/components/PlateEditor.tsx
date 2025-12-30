@@ -19,6 +19,21 @@ const EditorContainer = styled.div`
     border: 1px solid ${props => props.theme.colors.border};
     border-radius: ${props => props.theme.borderRadius.lg};
     overflow: hidden;
+
+    /* Mobile portrait: Use wider aspect ratio to reduce height */
+    ${props => props.theme.media.mobilePortrait} {
+        aspect-ratio: 4 / 3;
+    }
+
+    /* Tablet portrait: Compromise between desktop and mobile */
+    ${props => props.theme.media.tabletPortrait} {
+        aspect-ratio: 3 / 2;
+    }
+
+    /* Landscape: Always use square */
+    ${props => props.theme.media.landscape} {
+        aspect-ratio: 1 / 1;
+    }
 `;
 
 const EditorSVG = styled.svg`
@@ -26,6 +41,7 @@ const EditorSVG = styled.svg`
     height: 100%;
     cursor: crosshair;
     display: block;
+    touch-action: none; // Prevent default touch behaviors
 `;
 
 const HeatSourceGroup = styled.g`
@@ -52,12 +68,17 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
 
     const { Lx, Ly, inclusions, heatSource, baseMaterial } = config;
 
-    // Comvert mouse event to physical cooridantes [m]
-    const getMousePos = (e: MouseEvent | React.MouseEvent) => {
+    // Convert pointer event (mouse or touch) to physical coordinates [m]
+    const getPointerPos = (e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
         if (!svgRef.current) return { x: 0, y: 0 };
         const rect = svgRef.current.getBoundingClientRect();
-        const px = e.clientX - rect.left;
-        const py = e.clientY - rect.top;
+
+        // Handle both mouse and touch events
+        const clientX = 'touches' in e ? e.touches[0]?.clientX ?? e.changedTouches[0]?.clientX : e.clientX;
+        const clientY = 'touches' in e ? e.touches[0]?.clientY ?? e.changedTouches[0]?.clientY : e.clientY;
+
+        const px = clientX - rect.left;
+        const py = clientY - rect.top;
         // Scale pixel to meters
         const scaleX = Lx / rect.width;
         const scaleY = Ly / rect.height;
@@ -68,25 +89,25 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
         };
     };
 
-    const handleMouseDown = (e: React.MouseEvent, id: string, initialX: number, initialY: number) => {
+    const handlePointerDown = (e: React.MouseEvent | React.TouchEvent, id: string, initialX: number, initialY: number) => {
         e.preventDefault();
         e.stopPropagation();
-        const mouse = getMousePos(e);
+        const pos = getPointerPos(e);
         setDragging(id);
-        // Calculate offset to prevent object to snap to mouse center
+        // Calculate offset to prevent object to snap to pointer center
         setOffset({
-            x: mouse.x - initialX,
-            y: mouse.y - initialY
+            x: pos.x - initialX,
+            y: pos.y - initialY
         });
     };
 
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
+        const handlePointerMove = (e: MouseEvent | TouchEvent) => {
             if (!dragging || !svgRef.current) return;
 
-            const mouse = getMousePos(e);
-            let newX = mouse.x - offset.x;
-            let newY = mouse.y - offset.y;
+            const pos = getPointerPos(e);
+            let newX = pos.x - offset.x;
+            let newY = pos.y - offset.y;
 
             if (dragging === "heatSource") {
                 // Clamp to plate bounds
@@ -105,17 +126,21 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
             }
         };
 
-        const handleMouseUp = () => {
+        const handlePointerUp = () => {
             setDragging(null);
         }
 
         if (dragging) {
-            window.addEventListener("mousemove", handleMouseMove);
-            window.addEventListener("mouseup", handleMouseUp);
+            window.addEventListener("mousemove", handlePointerMove);
+            window.addEventListener("mouseup", handlePointerUp);
+            window.addEventListener("touchmove", handlePointerMove, { passive: false });
+            window.addEventListener("touchend", handlePointerUp);
         }
         return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
+            window.removeEventListener("mousemove", handlePointerMove);
+            window.removeEventListener("mouseup", handlePointerUp);
+            window.removeEventListener("touchmove", handlePointerMove);
+            window.removeEventListener("touchend", handlePointerUp);
         };
     }, [dragging, offset, Lx, Ly, inclusions, onUpdateHeatSource, onUpdateInclusion]);
 
@@ -146,7 +171,8 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
                     return (
                         <g
                             key={inc.id}
-                            onMouseDown={(e) => handleMouseDown(e, inc.id, inc.x, inc.y)}
+                            onMouseDown={(e) => handlePointerDown(e, inc.id, inc.x, inc.y)}
+                            onTouchStart={(e) => handlePointerDown(e, inc.id, inc.x, inc.y)}
                             style={{ cursor: "move" }}
                         >
                             <rect
@@ -180,7 +206,8 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
                 {/* Heat Source */}
                 {heatSource.active && (
                     <HeatSourceGroup
-                        onMouseDown={(e) => handleMouseDown(e, "heatSource", heatSource.x, heatSource.y)}
+                        onMouseDown={(e) => handlePointerDown(e, "heatSource", heatSource.x, heatSource.y)}
+                        onTouchStart={(e) => handlePointerDown(e, "heatSource", heatSource.x, heatSource.y)}
                         style={{ cursor: "move" }}
                     >
                         {/* Hit Area (Larger than visible source for easier grabbing) */}
