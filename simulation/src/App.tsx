@@ -66,7 +66,7 @@ export default function App() {
     }
   }, [activeTab, config]);
   // ===== Animation Loop =====
-  const animate = useCallback((time: number) => {
+  const animate = useCallback(function step(time: number) {
     if (!engineRef.current) return;
 
     // Initialize timings on first frame
@@ -82,7 +82,7 @@ export default function App() {
 
     if (deltaRender < fpsInterval) {
       if (isRunning) {
-        requestRef.current = requestAnimationFrame(animate);
+        requestRef.current = requestAnimationFrame(step);
       }
       return;
     }
@@ -138,7 +138,7 @@ export default function App() {
     }
 
     if (isRunning) {
-      requestRef.current = requestAnimationFrame(animate);
+      requestRef.current = requestAnimationFrame(step);
     }
   }, [isRunning, config.timeStepMultiplier, speed, targetFps]);
 
@@ -177,11 +177,17 @@ export default function App() {
 
 
   // ==== Editor Update Functions =====
-  const updateConfig = (key: keyof SimulationConfig, value: any) => {
+  const updateConfig = <K extends keyof SimulationConfig>(
+    key: K,
+    value: SimulationConfig[K]
+  ) => {
     setConfig(prev => ({ ...prev, [key]: value }));
-  }
+  };
 
-  const updateHeatSource = (key: string, value: any) => {
+  const updateHeatSource = <K extends keyof SimulationConfig['heatSource']>(
+    key: K,
+    value: SimulationConfig['heatSource'][K]
+  ) => {
     setConfig(prev => ({
       ...prev,
       heatSource: { ...prev.heatSource, [key]: value }
@@ -211,7 +217,11 @@ export default function App() {
     }));
   };
 
-  const updateInclusion = (id: string, field: keyof Region, value: any) => {
+  const updateInclusion = <K extends keyof Region>(
+    id: string,
+    field: K,
+    value: Region[K]
+  ) => {
     setConfig(prev => ({
       ...prev,
       inclusions: prev.inclusions.map(inc =>

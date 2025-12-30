@@ -12,9 +12,19 @@ import { PlateEditor } from "@/components/PlateEditor";
 // ===== TypeScript Interface =====
 interface SetupViewProps {
     config: SimulationConfig;
-    onUpdateConfig: (key: keyof SimulationConfig, value: any) => void;
-    onUpdateHeatSource: (key: string, value: any) => void;
-    onUpdateInclusion: (id: string, field: keyof Region, value: any) => void;
+    onUpdateConfig: <K extends keyof SimulationConfig>(
+        key: K,
+        value: SimulationConfig[K]
+    ) => void;
+    onUpdateHeatSource: <K extends keyof SimulationConfig['heatSource']>(
+        key: K,
+        value: SimulationConfig['heatSource'][K]
+    ) => void;
+    onUpdateInclusion: <K extends keyof Region>(
+        id: string,
+        field: K,
+        value: Region[K]
+    ) => void;
     onAddInclusion: () => void;
     onRemoveInclusion: (id: string) => void;
     onInclusionMove: (id: string, x: number, y: number) => void;
@@ -256,7 +266,12 @@ export const SetupView: React.FC<SetupViewProps> = ({
                     <Select
                         label="Boundary Condition"
                         value={config.boundaryCondition}
-                        onChange={(e) => onUpdateConfig('boundaryCondition', e.target.value)}
+                        onChange={(e) =>
+                            onUpdateConfig(
+                                'boundaryCondition',
+                                e.target.value as SimulationConfig['boundaryCondition']
+                            )
+                        }
                         options={[
                             { value: 'dirichlet', label: 'Simple (Direchlet)' },
                             { value: 'robin', label: 'Complex (Robin)' }

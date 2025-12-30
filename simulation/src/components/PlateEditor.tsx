@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { type SimulationConfig } from "@/utils/types";
 import { MATERIALS } from "@/utils/constants";
@@ -69,7 +69,7 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
     const { Lx, Ly, inclusions, heatSource, baseMaterial } = config;
 
     // Convert pointer event (mouse or touch) to physical coordinates [m]
-    const getPointerPos = (e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
+    const getPointerPos = useCallback((e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
         if (!svgRef.current) return { x: 0, y: 0 };
         const rect = svgRef.current.getBoundingClientRect();
 
@@ -87,7 +87,7 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
             x: px * scaleX,
             y: py * scaleY
         };
-    };
+    }, [Lx, Ly]);
 
     const handlePointerDown = (e: React.MouseEvent | React.TouchEvent, id: string, initialX: number, initialY: number) => {
         e.preventDefault();
@@ -142,7 +142,7 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
             window.removeEventListener("touchmove", handlePointerMove);
             window.removeEventListener("touchend", handlePointerUp);
         };
-    }, [dragging, offset, Lx, Ly, inclusions, onUpdateHeatSource, onUpdateInclusion]);
+    }, [dragging, offset, Lx, Ly, inclusions, onUpdateHeatSource, onUpdateInclusion, getPointerPos]);
 
     const baseColor = MATERIALS[baseMaterial]?.color || "#333";
     const baseSymbol = MATERIALS[baseMaterial]?.symbol || "?";

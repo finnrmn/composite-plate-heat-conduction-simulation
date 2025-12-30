@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 import React from 'react';
-import type { StackId } from 'recharts/types/util/ChartUtils';
+
+type PanelAccent = 'primary' | 'secondary' | 'warning' | 'danger';
 
 // ===== TypeScrpt Interface =====
 interface PanelProps {
     title: string;
     icon?: React.ReactNode;
     children: React.ReactNode;
-    accent?: 'primary' | 'secondary' | 'warning';
+    accent?: PanelAccent;
     className?: string;
+}
+interface PanelHeaderProps {
+    $accent?: PanelAccent;
 }
 // ===== Styled Components =====
 const PanelContainer = styled.section`
@@ -17,7 +21,7 @@ const PanelContainer = styled.section`
     border-radius: ${props => props.theme.borderRadius.lg};
     padding: ${props => props.theme.spacing.lg};
 `;
-const PanelHeader = styled.h2`
+const PanelHeader = styled.h2<PanelHeaderProps>`
     font-size: ${props => props.theme.fontSize.xl};
     font-weight: 600;
     margin-bottom: ${props => props.theme.spacing.md};
