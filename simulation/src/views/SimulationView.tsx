@@ -31,6 +31,15 @@ const SimulationContainer = styled.div`
 
     ${props => props.theme.media.tabletPortrait} {
         flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    ${props => props.theme.media.mobile} {
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 `;
 
@@ -47,9 +56,12 @@ const Sidebar = styled.aside`
     ${props => props.theme.media.tabletPortrait} {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid ${props => props.theme.colors.border};
-        max-height: 40vh; // Limit height when stacked
-        overflow-y: auto;
+        border-bottom: none;
+        max-height: none;
+        overflow: visible;
+        order: 2;
+        flex: none;
+        border-top: 1px solid ${props => props.theme.colors.border};
     }
 
     ${props => props.theme.media.landscape} {
@@ -60,6 +72,14 @@ const Sidebar = styled.aside`
     }
 
     ${props => props.theme.media.mobile} {
+        width: 100%;
+        border-right: none;
+        border-bottom: none;
+        max-height: none;
+        overflow: visible;
+        order: 2;
+        flex: none;
+        border-top: 1px solid ${props => props.theme.colors.border};
         padding: ${props => props.theme.spacing.md};
         gap: ${props => props.theme.spacing.md};
     }
@@ -77,6 +97,8 @@ const CanvasArea = styled.div`
 
     ${props => props.theme.media.tabletPortrait} {
         padding: ${props => props.theme.spacing.lg};
+        order: 1;
+        flex: none;
     }
 
     ${props => props.theme.media.landscape} {
@@ -85,6 +107,8 @@ const CanvasArea = styled.div`
 
     ${props => props.theme.media.mobile} {
         padding: ${props => props.theme.spacing.md};
+        order: 1;
+        flex: none;
     }
 `;
 
@@ -270,7 +294,7 @@ const ColorLegend = styled.div`
     gap: ${props => props.theme.spacing.md};
 
     ${props => props.theme.media.mobile} {
-        flex-direction: column;
+        flex-direction: row;
         gap: ${props => props.theme.spacing.sm};
         align-items: flex-start;
     }

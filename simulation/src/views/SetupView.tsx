@@ -38,9 +38,18 @@ const SetupContainer = styled.div`
 
     ${props => props.theme.media.tabletPortrait} {
         flex-direction: column;
-        height: auto; // Allow scrolling
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    ${props => props.theme.media.mobile} {
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 `;
+
 const ConfigColumn = styled.div`
     width: 50%;
     height: 100%;
@@ -58,7 +67,12 @@ const ConfigColumn = styled.div`
 
     ${props => props.theme.media.tabletPortrait} {
         width: 100%;
-        max-height: 50vh; // Limit height when stacked
+        max-height: auto;
+        max-height: none;
+        overflow: visible;
+        order: 2;
+        flex: none;
+        border-top: 1px solid ${props => props.theme.colors.border}; 
     }
 
     ${props => props.theme.media.landscape} {
@@ -66,7 +80,13 @@ const ConfigColumn = styled.div`
     }
 
     ${props => props.theme.media.mobile} {
-        padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.md};
+        width: 100%;
+        max-height: auto;
+        max-height: none;
+        overflow: visible;
+        order: 2;
+        flex: none;
+        border-top: 1px solid ${props => props.theme.colors.border};
     }
 `;
 const EditorColumn = styled.div`
@@ -83,9 +103,11 @@ const EditorColumn = styled.div`
     ${props => props.theme.media.tabletPortrait} {
         width: 100%;
         border-left: none;
-        border-top: 1px solid ${props => props.theme.colors.border};
-        min-height: 400px; // Ensure editor is usable
-        overflow-y: auto; // Allow scrolling if content exceeds height
+        border-top: none;
+        height: auto;
+        overflow: visible;
+        order: 1;
+        flex: none;
     }
 
     ${props => props.theme.media.landscape} {
@@ -95,6 +117,13 @@ const EditorColumn = styled.div`
     }
 
     ${props => props.theme.media.mobile} {
+        width: 100%;
+        border-left: none;
+        border-top: none;
+        height: auto;
+        overflow: visible;
+        order: 1;
+        flex: none;
         padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.md};
     }
 `;
@@ -108,12 +137,12 @@ const EditorPanel = styled.div`
 
     /* Mobile portrait: Limit height to fit viewport */
     ${props => props.theme.media.mobilePortrait} {
-        max-height: 60vh;
+        max-height: none;
     }
 
     /* Tablet portrait: Slightly taller */
     ${props => props.theme.media.tabletPortrait} {
-        max-height: 70vh;
+        max-height: none;
     }
 `;
 const EditorTitle = styled.h2`
