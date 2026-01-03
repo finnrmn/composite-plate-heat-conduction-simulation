@@ -18,22 +18,7 @@ const EditorContainer = styled.div`
     background: ${props => props.theme.colors.bgPrimary};
     border: 1px solid ${props => props.theme.colors.border};
     border-radius: ${props => props.theme.borderRadius.lg};
-    overflow: hidden;
-
-    /* Mobile portrait: Use wider aspect ratio to reduce height */
-    ${props => props.theme.media.mobilePortrait} {
-        aspect-ratio: 4 / 3;
-    }
-
-    /* Tablet portrait: Compromise between desktop and mobile */
-    ${props => props.theme.media.tabletPortrait} {
-        aspect-ratio: 3 / 2;
-    }
-
-    /* Landscape: Always use square */
-    ${props => props.theme.media.landscape} {
-        aspect-ratio: 1 / 1;
-    }
+    overflow: visible;
 `;
 
 const EditorSVG = styled.svg`
@@ -159,7 +144,7 @@ export const PlateEditor: React.FC<PlateEditorProps> = ({
                     textAnchor="end"
                     dominantBaseline="hanging"
                     fill="rgba(255,255,255,0.2)"
-                    fontSize={Lx * 0.02}
+                    fontSize={Lx * 0.04}
                     fontWeight="bold"
                     
                 >

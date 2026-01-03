@@ -28,7 +28,12 @@ const SimulationContainer = styled.div`
     display: flex;
     height: 100%;
     overflow: hidden;
-
+    /* Hidden scrollbar for clean look */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
     ${props => props.theme.media.tabletPortrait} {
         flex-direction: column;
         height: 100%;
@@ -282,7 +287,7 @@ const GridInfo = styled.div`
     ${props => props.theme.media.mobile} {
         top: ${props => props.theme.spacing.sm};
         right: ${props => props.theme.spacing.sm};
-        font-size: 10px;
+        font-size: ${props => props.theme.fontSize.xxs};
         padding: ${props => props.theme.spacing.xs};
     }
 `;

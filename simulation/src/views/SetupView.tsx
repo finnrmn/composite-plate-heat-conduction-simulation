@@ -35,6 +35,12 @@ const SetupContainer = styled.div`
     display: flex;
     height: 100%;
     overflow: hidden;
+    /* Hidden scrollbar for clean look */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
 
     ${props => props.theme.media.tabletPortrait} {
         flex-direction: column;
@@ -153,6 +159,8 @@ const EditorTitle = styled.h2`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    
 `;
 const EditorDimensions = styled.span`
     font-size: ${props => props.theme.fontSize.xs};
@@ -160,6 +168,10 @@ const EditorDimensions = styled.span`
     color: ${props => props.theme.colors.textMuted};
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    ${props => props.theme.media.mobile} {
+        font-size: ${props => props.theme.fontSize.xxs}; 
+    }
+
 `;
 const Legend = styled.div`
     margin-top: ${props => props.theme.spacing.md};
@@ -170,7 +182,6 @@ const Legend = styled.div`
     color: ${props => props.theme.colors.textMuted};
 
     ${props => props.theme.media.mobile} {
-        grid-template-columns: 1fr; // Stack on mobile
         gap: ${props => props.theme.spacing.sm};
         margin-top: ${props => props.theme.spacing.sm}; // Reduce spacing on mobile
     }
